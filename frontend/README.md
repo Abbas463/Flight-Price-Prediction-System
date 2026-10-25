@@ -7,6 +7,25 @@ Currently, two official plugins are available:
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
 
+## Running the flight price predictor
+
+Start the Flask API from the repository root:
+
+```powershell
+python backend\app.py
+```
+
+In a second terminal, start the frontend:
+
+```powershell
+cd frontend
+npm run dev
+```
+
+The Vite development server forwards frontend requests from `/api` to the Flask
+backend at `http://127.0.0.1:5000`. Set `VITE_BACKEND_URL` if the backend is
+running at a different address.
+
 ## React Compiler
 
 The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).

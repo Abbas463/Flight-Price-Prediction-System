@@ -1,16 +1,16 @@
 from flask import Flask, request, jsonify
 import pickle
 from datetime import datetime
+from pathlib import Path
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
 
-# Load the pre-trained model
-model = pickle.load(open('model.pkl', 'rb'))
+with (Path(__file__).resolve().parent / 'model.pkl').open('rb') as model_file:
+    model = pickle.load(model_file)
 
-# Dictionaries for categorical variables
 airline_dict = {'AirAsia': 0, "Indigo": 1, "GO_FIRST": 2, "SpiceJet": 3, "Air_India": 4, "Vistara": 5}
 source_dict = {'Delhi': 0, "Hyderabad": 1, "Bangalore": 2, "Mumbai": 3, "Kolkata": 4, "Chennai": 5}
 departure_dict = {'Early_Morning': 0, "Morning": 1, "Afternoon": 2, "Evening": 3, "Night": 4, "Late_Night": 5}
@@ -31,11 +31,9 @@ def predict():
         destination_city = destination_dict[data['destination_city']]
         travel_class = class_dict[data['class']]
         
-        # Calculate date difference
         departure_date = datetime.strptime(data['departure_date'], '%Y-%m-%d')
         date_diff = (departure_date - datetime.today()).days + 1
 
-        # Prepare features for prediction
         features = [airline, source_city, departure_time, stops, arrival_time, destination_city, travel_class, date_diff]
         prediction = model.predict([features])[0]
 
